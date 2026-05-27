@@ -1,0 +1,141 @@
+### =========================
+### 1. Create Employee
+### =========================
+POST http://localhost:4004/odata/v4/fleet/Employees
+Content-Type: application/json
+
+{
+  "Name": "Varun Patel",
+  "Email":"varun@fleet.com",
+  "Department": "Operations",
+  "DriverLicense": "DL12345678",
+  "LicenseExpiry": "2027-12-31"
+}
+
+
+
+### =========================
+### 2. Create Vehicle
+### =========================
+POST http://localhost:4004/FleetService/Vehicles
+Content-Type: application/json
+
+{
+  "RegNumber": "KA01AB1234",
+  "Make": "Toyota",
+  "Model": "Innova",
+  "Year": 2022,
+  "FuelType": "Diesel",
+  "Status": "Available",
+  "Odometer": 12500,
+  "NextServiceDue": "2026-12-31",
+  "NextServiceOdometer": 20000
+}
+
+---
+
+### =========================
+### 3. Assign Vehicle to Employee
+### (replace IDs after creation)
+### =========================
+POST http://localhost:4004/FleetService/Vehicles(ID)/FleetService.assignVehicle
+Content-Type: application/json
+
+{
+  "employeeID": "EMPLOYEE_ID_HERE"
+}
+
+---
+
+### =========================
+### 4. Create Service Record
+### =========================
+POST http://localhost:4004/FleetService/ServiceRecords
+Content-Type: application/json
+
+{
+  "Vehicle_ID": "VEHICLE_ID_HERE",
+  "ServiceType": "OilChange",
+  "ServiceDate": "2026-01-10",
+  "ServiceCenter": "Toyota Service Hub",
+  "Odometer": 13000,
+  "Cost": 4500,
+  "Description": "Routine oil change",
+  "NextServiceOdometer": 18000
+}
+
+---
+
+### =========================
+### 5. Create Fuel Log
+### =========================
+POST http://localhost:4004/FleetService/FuelLogs
+Content-Type: application/json
+
+{
+  "Vehicle_ID": "VEHICLE_ID_HERE",
+  "Driver_ID": "EMPLOYEE_ID_HERE",
+  "FuelDate": "2026-05-20",
+  "Liters": 40,
+  "CostPerLiter": 105.50,
+  "TotalCost": 4220,
+  "Odometer": 14000,
+  "FuelEfficiency": 14.5
+}
+
+---
+
+### =========================
+### 6. Create Maintenance Alert
+### =========================
+POST http://localhost:4004/FleetService/MaintenanceAlerts
+Content-Type: application/json
+
+{
+  "Vehicle_ID": "VEHICLE_ID_HERE",
+  "AlertType": "MileageDue",
+  "DueDate": "2026-06-01",
+  "DueOdometer": 15000,
+  "Status": "Open",
+  "Description": "Vehicle approaching service limit"
+}
+
+---
+
+### =========================
+### 7. Get All Vehicles
+### =========================
+GET http://localhost:4004/FleetService/Vehicles
+Accept: application/json
+
+---
+
+### =========================
+### 8. Expand Assigned Employee
+### =========================
+GET http://localhost:4004/FleetService/Vehicles?$expand=AssignedTo
+Accept: application/json
+
+---
+
+### =========================
+### 9. Get Service Records of Vehicle
+### =========================
+GET http://localhost:4004/FleetService/Vehicles(ID)/serviceRecords
+Accept: application/json
+
+---
+
+### =========================
+### 10. Get Fuel Logs of Vehicle
+### =========================
+GET http://localhost:4004/FleetService/Vehicles(ID)/fuelLogs
+Accept: application/json
+
+---
+
+### =========================
+### 11. Get Maintenance Alerts
+### =========================
+GET http://localhost:4004/FleetService/Vehicles(ID)/maintenanceAlerts
+Accept: application/json

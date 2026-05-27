@@ -1,0 +1,79 @@
+{
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.Fleet.Read",
+      "description": "Fleet.Read"
+    },
+    {
+      "name": "$XSAPPNAME.Fleet.Assign",
+      "description": "Fleet.Assign"
+    },
+    {
+      "name": "$XSAPPNAME.Fleet.Manage",
+      "description": "Fleet.Manage"
+    },
+    {
+      "name": "$XSAPPNAME.Admin.All",
+      "description": "Admin.All"
+    },
+    {
+      "name": "$XSAPPNAME.Maintenance.Manage",
+      "description": "Maintenance.Manage"
+    },
+    {
+      "name": "$XSAPPNAME.Maintenance.Log",
+      "description": "Maintenance.Log"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "Fleet.Read",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.Fleet.Read"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Fleet.Assign",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.Fleet.Assign"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Fleet.Manage",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.Fleet.Manage"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Admin.All",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.Admin.All"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Maintenance.Manage",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.Maintenance.Manage"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Maintenance.Log",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.Maintenance.Log"
+      ],
+      "attribute-references": []
+    }
+  ]
+}
