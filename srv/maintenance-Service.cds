@@ -89,8 +89,4 @@ entity Vehicles          as projection on fleet.Vehicles;
 
 @readonly
 entity Employees         as projection on fleet.Employees;
-
-
-
 }
-
