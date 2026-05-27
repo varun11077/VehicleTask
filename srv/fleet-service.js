@@ -1,16 +1,4 @@
-// =============================================================================
-//  srv/fleet-service.js
-//  Handler implementation for FleetService
-//
-//  Registers:
-//    AFTER  READ     Vehicles          — populate StatusCriticality (virtual)
-//    AFTER  READ     MaintenanceAlerts — populate AlertCriticality  (virtual)
-//    ON     assignVehicle              — validate + assign vehicle to employee
-//    ON     releaseVehicle             — release assignment, set status Available
-//    ON     updateOdometer             — record reading; auto-create alert if due
-//    ON     getVehiclesDueForService   — query overdue vehicles
-// =============================================================================
-'use strict';
+
 
 const cds = require('@sap/cds');
 const {
@@ -19,40 +7,39 @@ const {
     vehicleStatusCriticality,
     alertStatusCriticality
 } = require('./utils/validators');
+
 const { SELECT } = require('@sap/cds/lib/ql/cds-ql');
 
 module.exports = cds.service.impl(async function () {
 
     const { Vehicles, Employees, MaintenanceAlerts } = this.entities;
 
-    /**
-     * Handler for the bound 'closeAlert' action on MaintenanceAlerts
-     */
-      this.on('closeAlert',MaintenanceAlerts, async (req) => {
-            console.log("ACTION TRIGGERED");
-            const alertId = req.params[1].ID;
-            const alert = await SELECT.one.from(MaintenanceAlerts).where({ID:alertId})
-            if(!alert) req.reject(400,"No alert found with this ID")
-            console.log(alert)
+    
+    this.on('closeAlert', MaintenanceAlerts, async (req) => {
+        console.log("ACTION TRIGGERED");
+        const alertId = req.params[1].ID;
+        const alert = await SELECT.one.from(MaintenanceAlerts).where({ ID: alertId })
+        if (!alert) req.reject(400, "No alert found with this ID")
+        console.log(alert)
 
-            if(alert.Status == 'Closed') req.reject(400,"Alert already Closed")
+        if (alert.Status == 'Closed') req.reject(400, "Alert already Closed")
 
-            await UPDATE(MaintenanceAlerts)
-                .set({
-                    Status: 'Closed'
-                })
-                .where({
-                    ID: alertId
-                });
-            req.notify("Alert closed successfully")
-            return {
-                success: true,
-                message: `Alert ${alertId} closed successfully`
-            };
+        await UPDATE(MaintenanceAlerts)
+            .set({
+                Status: 'Closed'
+            })
+            .where({
+                ID: alertId
+            });
+        req.notify("Alert closed successfully")
+        return {
+            success: true,
+            message: `Alert ${alertId} closed successfully`
+        };
 
     });
 
-    
+
     this.after('READ', Vehicles, (results) => {
         const rows = Array.isArray(results) ? results : [results];
         for (const row of rows) {
@@ -62,7 +49,7 @@ module.exports = cds.service.impl(async function () {
         }
     });
 
-    
+
     this.after('READ', MaintenanceAlerts, (results) => {
         const rows = Array.isArray(results) ? results : [results];
         for (const row of rows) {
@@ -73,19 +60,19 @@ module.exports = cds.service.impl(async function () {
     });
 
 
-   
+
     this.on('assignVehicle', async (req) => {
         const { vehicleID, employeeID } = req.data;
 
-       
+
         const vResult = await validateVehicle(Vehicles, vehicleID, 'Available');
         if (!vResult.valid) return req.error(400, vResult.error);
 
-        
+
         const eResult = await validateEmployeeForDriving(Employees, employeeID);
         if (!eResult.valid) return req.error(400, eResult.error);
 
-        
+
         await UPDATE(Vehicles, vehicleID).with({
             Status: 'Assigned',
             AssignedTo_ID: employeeID
@@ -99,7 +86,7 @@ module.exports = cds.service.impl(async function () {
     });
 
 
-   
+
     this.on('releaseVehicle', async (req) => {
         const { vehicleID } = req.data;
 
@@ -170,7 +157,7 @@ module.exports = cds.service.impl(async function () {
     });
 
 
-    
+
     this.on('getVehiclesDueForService', async (req) => {
         const today = new Date().toISOString().split('T')[0];
 
@@ -183,10 +170,10 @@ module.exports = cds.service.impl(async function () {
         overdue.forEach(v => {
             v.StatusCriticality = vehicleStatusCriticality(v.Status);
         });
-req.info({
-    message: `${overdue.length} vehicles due for service`,
-    numericSeverity: 2
-});
+        req.info({
+            message: `${overdue.length} vehicles due for service`,
+            numericSeverity: 2
+        });
         return overdue;
     });
 
