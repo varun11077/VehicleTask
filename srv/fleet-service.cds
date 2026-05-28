@@ -46,8 +46,7 @@ service FleetService @(requires: 'authenticated-user') {
         @restrict: [
             { grant: 'EXECUTE', to: ['Fleet.Manage', 'Admin.All'] }
         ]
-        function getVehiclesDueForService()
-            returns array of Vehicles;
+        function getVehiclesDueForService() returns array of Vehicles;
     };
 
 
