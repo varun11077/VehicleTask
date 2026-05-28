@@ -1,9 +1,5 @@
 using MaintenanceService as service from '../../srv/maintenance-Service';
 
-// ════════════════════════════════════════════════════════════════════════════════
-// SERVICE RECORDS
-// ════════════════════════════════════════════════════════════════════════════════
-
 annotate service.ServiceRecords with {
     Vehicle             @title: 'Vehicle';
     ServiceType         @title: 'Service Type';
