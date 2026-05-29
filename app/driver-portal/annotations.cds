@@ -38,7 +38,7 @@ annotate service.Vehicles with {
                 }
             ]
         },
-        Common.ValueListWithFixedValues: false
+        Common.ValueListWithFixedValues: true
     )
 }
 
@@ -129,7 +129,8 @@ annotate service.Vehicles with @(
         Description   : {
             $Type: 'UI.DataField',
             Value: Make
-        }
+        },
+         ImageUrl: 'sap-icon://person-placeholder'
     },
 
     UI.DataPoint #VehicleStatus   : {
@@ -354,6 +355,7 @@ annotate service.FuelLogs with @(UI.LineItem: [
         $Type: 'UI.DataField',
         Value: Odometer,
         Label: 'Odometer (km)'
+        
     },
     {
         $Type: 'UI.DataField',
@@ -377,7 +379,8 @@ annotate service.MaintenanceAlerts with @(UI.LineItem: [
     {
         $Type: 'UI.DataField',
         Value: DueOdometer,
-        Label: 'Due at (km)'
+        Label: 'Due at (km)',
+       
     },
     {
         $Type                    : 'UI.DataField',
@@ -390,6 +393,7 @@ annotate service.MaintenanceAlerts with @(UI.LineItem: [
         $Type: 'UI.DataField',
         Value: Description,
         Label: 'Description'
+        
     },
     {
         $Type      : 'UI.DataFieldForAction',
@@ -402,7 +406,9 @@ annotate service.MaintenanceAlerts with @(UI.LineItem: [
         Action : 'FleetService.closeAlert',
         Label : 'Close Alert',
     },
+
 ],
-    UI.Identification : [
-        
-    ],);
+
+);
+
+

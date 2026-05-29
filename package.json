@@ -28,7 +28,7 @@
     },
     "requires": {
       "auth": {
-        "kind": "dummy",
+        "kind": "mocked",
         "users": {
           "driver": {
             "password": "driver",
@@ -74,7 +74,6 @@
   ],
   "sapux": [
     "app/driver-portal",
-    "app/manager-dashboard",
-    "app/kpi-tiles"
+    "app/manager-dashboard"
   ]
 }

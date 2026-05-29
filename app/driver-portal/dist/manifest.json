@@ -162,7 +162,8 @@
 										"type": "ResponsiveTable"
 									}
 								}
-							}
+							},
+							"initialLoad": "Enabled"
 						}
 					},
 					"controlAggregation": "beginColumnPages",

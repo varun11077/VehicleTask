@@ -105,4 +105,31 @@ entity MaintenanceAlerts : cuid {
     //service : Association to ServiceRecords;
 }
 
+
+
+// db/schema.cds — replace your previous CostKPIs view with this
+
+// @cds.autoexpose
+// view CostKPIs as
+//     select from ServiceRecords {
+//         key ID,
+//             Vehicle.ID          as Vehicle_ID   : UUID,
+//             ServiceType         as CostCategory : String(50),
+//             ServiceDate         as CostDate     : Date,
+//             Cost                as TotalCost    : Decimal(12,2),
+//             Cost                as ServiceCost  : Decimal(12,2),
+//             0                   as FuelCost     : Decimal(10,2),
+//             1                   as costCount    : Integer
+//     }
+//     union all
+//     select from FuelLogs {
+//         key ID,
+//             Vehicle.ID          as Vehicle_ID   : UUID,
+//             'Fuel'              as CostCategory : String(50),
+//             FuelDate            as CostDate     : Date,
+//             TotalCost           as TotalCost    : Decimal(12,2),
+//             0                   as ServiceCost  : Decimal(12,2),
+//             TotalCost           as FuelCost     : Decimal(10,2),
+//             1                   as costCount    : Integer
+//     };
  

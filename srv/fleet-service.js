@@ -9,6 +9,7 @@ const {
 } = require('./utils/validators');
 
 const { SELECT } = require('@sap/cds/lib/ql/cds-ql');
+const { data } = require('@sap/cds/lib/dbs/cds-deploy');
 
 module.exports = cds.service.impl(async function () {
 
@@ -61,34 +62,28 @@ module.exports = cds.service.impl(async function () {
 
 
 
-    this.on('assignVehicle', async (req) => {
-        const { vehicleID, employeeID } = req.data;
-
-
+    this.on('assignVehicle', Vehicles,async (req) => {
+        console.log(req.data);
+        const vehicleID = req.params[0].ID
+        console.log(vehicleID);
+        
+        const {  employeeID } = req.data;
         const vResult = await validateVehicle(Vehicles, vehicleID, 'Available');
         if (!vResult.valid) return req.error(400, vResult.error);
-
-
         const eResult = await validateEmployeeForDriving(Employees, employeeID);
         if (!eResult.valid) return req.error(400, eResult.error);
-
 
         await UPDATE(Vehicles, vehicleID).with({
             Status: 'Assigned',
             AssignedTo_ID: employeeID
         });
-
-        return {
-            success: true,
-            message: `Vehicle '${vResult.vehicle.RegNumber}' successfully assigned ` +
-                `to ${eResult.employee.Name}.`
-        };
+        req.info(`Vehicle '${vResult.vehicle.RegNumber}' successfully assigned to ${eResult.employee.Name}.`);
     });
 
 
 
     this.on('releaseVehicle', async (req) => {
-        const { vehicleID } = req.data;
+        const vehicleID = req.params[0].ID
 
         const vResult = await validateVehicle(Vehicles, vehicleID);
         if (!vResult.valid) return req.error(404, vResult.error);
@@ -103,11 +98,8 @@ module.exports = cds.service.impl(async function () {
             Status: 'Available',
             AssignedTo_ID: null
         });
-
-        return {
-            success: true,
-            message: `Vehicle '${vehicle.RegNumber}' released and now Available.`
-        };
+        req.info(`Vehicle '${vehicle.RegNumber}' released and now Available.`);
+    
     });
 
 

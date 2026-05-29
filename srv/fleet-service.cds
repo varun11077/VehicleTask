@@ -13,18 +13,40 @@ service FleetService @(requires: 'authenticated-user') {
             { grant: 'EXECUTE', to: ['Fleet.Assign', 'Fleet.Manage', 'Admin.All'] }
         ]
         action assignVehicle(
-            vehicleID  : UUID,
-            employeeID : UUID
-        ) returns {
-            success : Boolean;
-            message : String;
-        };
+    @(  title : 'Select Driver',
+        Common : {
+            ValueListWithFixedValues : false, // False forces a searchable pop-up instead of a flat dropdown
+            ValueList : {
+                Label           : 'Drivers List',
+                CollectionPath  : 'Employees',
+                Parameters      : [
+                    {
+                        $Type            : 'Common.ValueListParameterInOut',
+                        ValueListProperty: 'ID', // The field from Employees entity
+                        LocalDataProperty: employeeID // The parameter name in this action
+                    },
+                    {
+                        $Type            : 'Common.ValueListParameterDisplayOnly',
+                        ValueListProperty: 'Name' // Shows the driver's name in the popup grid
+                    },
+                    {
+                        $Type            : 'Common.ValueListParameterDisplayOnly',
+                        ValueListProperty: 'Email' // Shows their email to help differentiate drivers
+                    }
+                ]
+            }
+        }
+    )
+    employeeID: Employees:ID
+) returns {
+    success : Boolean;
+    message : String;
+};
 
         @restrict: [
             { grant: 'EXECUTE', to: ['Fleet.Assign', 'Fleet.Manage', 'Admin.All'] }
         ]
         action releaseVehicle(
-            vehicleID : UUID
         ) returns {
             success : Boolean;
             message : String;

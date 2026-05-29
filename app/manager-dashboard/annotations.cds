@@ -39,7 +39,7 @@ annotate service.ServiceRecords with {
                 }
             ]
         },
-        Common.ValueListWithFixedValues: false
+        Common.ValueListWithFixedValues: true
     )
 }
 
