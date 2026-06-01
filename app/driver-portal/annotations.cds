@@ -49,6 +49,7 @@ annotate service.Vehicles with @(
         FuelType,
         AssignedTo_ID
     ],
+    
 
     UI.LineItem       : [
         {
@@ -410,5 +411,6 @@ annotate service.MaintenanceAlerts with @(UI.LineItem: [
 ],
 
 );
+
 
 

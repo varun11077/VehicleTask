@@ -53,7 +53,12 @@
           "admin": {
             "password": "admin",
             "roles": [
-              "Admin.All"
+              "Admin.All",
+              "Fleet.Manage",
+              "Fleet.Assign",
+              "Maintenance.Manage",
+              "Fleet.Read",
+              "Maintenance.Log"
             ]
           }
         }

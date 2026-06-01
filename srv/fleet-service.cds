@@ -119,6 +119,10 @@ service FleetService @(requires: 'authenticated-user') {
 
         Vehicle : redirected to Vehicles
     }actions{
+
+        @restrict: [
+        { grant: 'EXECUTE', to: ['Maintenance.Manage', 'Fleet.Manage', 'Admin.All'] }
+    ]
             action closeAlert() returns {
             success : Boolean;
             message : String;
